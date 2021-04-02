@@ -9,6 +9,14 @@ module Decidim
         @processed = { registered: [], authorized: [], revoked: [] }
       end
 
+      def add_processed(type, email)
+        @processed[type] << email
+      end
+
+      def add_error(type, email)
+        @errors[type] << email
+      end
+
       def processed_count(key)
         processed[key].size
       end
@@ -24,14 +32,6 @@ module Decidim
         else
           add_error event, email
         end
-      end
-
-      def add_error(type, email)
-        @errors[type] << email unless @errors[type].include? email
-      end
-
-      def add_processed(type, email)
-        @processed[type] << email unless @processed[type].include? email
       end
 
       private
