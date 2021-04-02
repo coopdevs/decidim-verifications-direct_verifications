@@ -140,10 +140,11 @@ module Decidim
         before do
           subject.emails = { user.email => user.name }
           subject.authorize_users
-          subject.revoke_users
         end
 
         it "has no errors" do
+          subject.revoke_users
+
           expect(subject.processed[:revoked].count).to eq(1)
           expect(subject.errors[:revoked].count).to eq(0)
         end
@@ -153,10 +154,11 @@ module Decidim
         before do
           subject.emails = ["em@il.com"]
           subject.authorize_users
-          subject.revoke_users
         end
 
-        it "has no errors" do
+        it "has errors" do
+          subject.revoke_users
+
           expect(subject.processed[:revoked].count).to eq(0)
           expect(subject.errors[:revoked].count).to eq(1)
         end
