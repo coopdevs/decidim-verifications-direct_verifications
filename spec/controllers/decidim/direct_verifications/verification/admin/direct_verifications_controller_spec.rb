@@ -7,6 +7,12 @@ module Decidim::DirectVerifications::Verification::Admin
   describe DirectVerificationsController, type: :controller do
     routes { Decidim::DirectVerifications::Verification::AdminEngine.routes }
 
+    around do |example|
+      perform_enqueued_jobs do
+        example.run
+      end
+    end
+
     let(:user) { create(:user, :confirmed, :admin, organization: organization) }
     let(:organization) do
       create(:organization, available_authorizations: [verification_type])
